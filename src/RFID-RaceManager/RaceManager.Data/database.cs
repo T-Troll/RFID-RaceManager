@@ -11,10 +11,10 @@ namespace RaceManager.Data
     {
         public SQLiteConnection get_SQLiteConnection()
         {
-            if (!File.Exists("races.sqlite"))
-                SQLiteConnection.CreateFile("races.sqlite");
+            if (!File.Exists("races.db"))//sqlite"))
+                SQLiteConnection.CreateFile("races.db");// sqlite");
 
-            SQLiteConnection myConnection = new SQLiteConnection("data source=races.sqlite");
+            SQLiteConnection myConnection = new SQLiteConnection("data source=races.db");// sqlite");
             myConnection.Open();
             return myConnection;
         }

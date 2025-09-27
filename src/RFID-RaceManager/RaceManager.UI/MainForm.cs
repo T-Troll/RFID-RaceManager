@@ -5668,7 +5668,7 @@ namespace RaceManager.UI
                 cmd = new SQLiteCommand("Delete from Pilots", objDatabase.get_SQLiteConnection());
                 cmd.ExecuteNonQuery();
 
-                cmd = new SQLiteCommand("Delete from LapsInfos", objDatabase.get_SQLiteConnection());
+                cmd = new SQLiteCommand("Delete from LapsInfoes", objDatabase.get_SQLiteConnection());
                 cmd.ExecuteNonQuery();
 
                 cmd = new SQLiteCommand("Delete from RaceEvents", objDatabase.get_SQLiteConnection());
@@ -5680,8 +5680,8 @@ namespace RaceManager.UI
                 cmd = new SQLiteCommand("Delete from Races", objDatabase.get_SQLiteConnection());
                 cmd.ExecuteNonQuery();
 
-                cmd = new SQLiteCommand("Delete from Pilot_Groups", objDatabase.get_SQLiteConnection());
-                cmd.ExecuteNonQuery();
+                //cmd = new SQLiteCommand("Delete from Pilot_Groups", objDatabase.get_SQLiteConnection());
+                //cmd.ExecuteNonQuery();
 
                 bindingSourcePilots1.Clear();
                 clearFormText();

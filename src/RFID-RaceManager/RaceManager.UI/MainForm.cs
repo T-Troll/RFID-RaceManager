@@ -100,7 +100,7 @@ namespace RaceManager.UI
             //Initialization connect the default configuration of reader.
             //cmbComPort.SelectedIndex = 0;
             //cmbBaudrate.SelectedIndex = 1;
-            ipIpServer.IpAddressStr = "192.168.1.200";
+            ipIpServer.IpAddressStr = "10.0.7.100";
             txtTcpPort.Text = "4001";
 
 
@@ -5046,6 +5046,7 @@ namespace RaceManager.UI
 
             if (_raceTime.TotalMilliseconds > 1)
             {
+                // TODO: need to resume race
                 MessageBox.Show("You should reset the timer before starting new race.");
                 return;
             }
@@ -5346,12 +5347,19 @@ namespace RaceManager.UI
 
         private string CleanTag(string tag)
         {
-            return new string(tag.Skip(tag.Length - 2).ToArray());
+            //int i = 0;
+            //while (tag[i] == ' ' || tag[i] == '0')
+            //{
+            //    i++;
+            //}
 
-            //int i;
-            //if (int.TryParse(tag.Replace(" ", ""), out i))
-            //    return i.ToString();
-            //return tag;
+            //return new string(tag.Skip(i).ToArray());
+            //return new string(tag.Skip(tag.Length - 2).ToArray());
+
+            int i;
+            if (int.TryParse(tag.Replace(" ", ""), out i))
+                return i.ToString();
+            return "0";
         }
 
         private void _timer_Elapsed(object sender, HighResolutionTimerElapsedEventArgs e)

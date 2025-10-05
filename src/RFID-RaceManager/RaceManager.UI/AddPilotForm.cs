@@ -24,7 +24,7 @@ namespace RaceManager.UI
             Pilot = new Pilot();
             Pilot.Tag = tbPilotTag.Text;
             Pilot.Name = tbPilotName.Text;
-            Pilot.Nickname = tbPilotNickname.Text;
+            Pilot.Nickname = tbPilotStartNumber.Text;
             Pilot.Team = tbPilotTeam.Text;
             Pilot.Email = tbPilotEmail.Text;
             Pilot.Confirmation = cbPilotConfirmation.Checked ? 1 : 0;

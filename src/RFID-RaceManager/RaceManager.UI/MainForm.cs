@@ -80,6 +80,8 @@ namespace RaceManager.UI
             _db.GroupMembers.Load();
             _db.Pilots.Load();
             _db.StageNames.Load();
+            _db.RaceGroups.Load();
+            _db.Races.Load();
 
             var members = _db.GroupMembers.ToList();
             foreach ( var member in members )
@@ -153,6 +155,15 @@ namespace RaceManager.UI
             //{
             //    MessageBox.Show("Database error. " + exception.Message);
             //}
+
+            // fill control..
+            //var stageList = _db.StageNames.ToList();
+            //foreach (var stageName in stageList)
+            //{
+            //    cmbRaceRound.Items.Add(stageName.Name);
+            //}
+
+            //cmbRaceRound.SelectedIndex = 0;
 
             StartListening();
         }
@@ -5436,16 +5447,16 @@ namespace RaceManager.UI
             race.Date = dtpRaceDate.Value;
             race.Location = tbRaceLocation.Text;
             race.Length = tbRaceLength.Text.TryToDoubleNull();
-            race.NumberOfLaps = Convert.ToInt32(nudNumOfLaps.Value);
-            race.NumberOfQualRounds = Convert.ToInt32(nudNumberOfQualRounds.Value);
-            race.UseSecondChance = cbSecondChance.Checked ? 1 : 0;
+            //race.NumberOfLaps = Convert.ToInt32(nudNumOfLaps.Value);
+            //race.NumberOfQualRounds = Convert.ToInt32(nudNumberOfQualRounds.Value);
+            //race.UseSecondChance = cbSecondChance.Checked ? 1 : 0;
 
             foreach (var raceEvent in race.RaceEvents)
             {
                 foreach (var lap in raceEvent.Laps)
                 {
                     lap.Length = race.Length;
-                    lap.NumberOfLaps = race.NumberOfLaps;
+                    //lap.NumberOfLaps = race.NumberOfLaps;
                 }
             }
             //  race.MinLapTime = Convert.ToInt32(tbRaceMinLapTime.Text);
@@ -5470,29 +5481,46 @@ namespace RaceManager.UI
             groupBox26.Enabled = enable;
         }
 
-        private void cmbRaceRound_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            tbCurEvRound.Text = cmbRaceRound.SelectedItem?.ToString();
-            ShowPilots();
-        }
+        //private void cmbRaceRound_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    tbCurEvRound.Text = cmbRaceRound.SelectedItem?.ToString();
+        //    ShowPilots();
+        //}
 
         private void ShowPilots()
         {
             _selectedRaceEvent = null;
-            if (cmbRaceGroup.SelectedItem == null || cmbRaceRound.SelectedItem == null) return;
+            if (cmbRaceGroup.SelectedItem == null) return;
+
+            var raceId = (cmbRaceGroup.SelectedItem as RaceUIInfo).Id;
+
+            var groups = _db.RaceGroups.Where(g => g.RaceId == raceId).ToList();
+
+            _selectedRaceEvent = new RaceEvent();
+
+            List<Pilot> pilots = new List<Pilot>();
+
+            foreach (var grp in groups)
+            {
+                var pg = _db.Groups.Find(grp.GroupId);
+                foreach (var pilot in pg.Members)
+                {
+
+                }
+            }
 
             var group = _race.Groups.FirstOrDefault(g => g.Name == cmbRaceGroup.SelectedItem.ToString());
-            var round = cmbRaceRound.SelectedItem.ToString();
+            //var round = "";// cmbRaceRound.SelectedItem.ToString();
             if (group != null)
             {
                 //find existing race event
-                var raceEvent = _race.RaceEvents.FirstOrDefault(r => r.Group.Name == group.Name && r.Round == round);
+                var raceEvent = _race.RaceEvents.FirstOrDefault(r => r.Group.Name == group.Name /*&& r.Round == round*/);
                 if (raceEvent == null)
                 {
                     raceEvent = new RaceEvent();
                     raceEvent.RaceId = _race.Id;
                     raceEvent.Group = group;
-                    raceEvent.Round = round;
+                    //raceEvent.Round = round;
                     _race.RaceEvents.Add(raceEvent);
                 }
 
@@ -5530,7 +5558,9 @@ namespace RaceManager.UI
 
         private void cmbRaceGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tbCurEvGroup.Text = cmbRaceGroup.SelectedItem?.ToString();
+            var selectedRace = cmbRaceGroup.SelectedItem as RaceUIInfo;
+            tbCurEvGroup.Text = selectedRace.Name;
+            tbCurEvRound.Text = _db.StageNames.Find(_db.Races.Find(selectedRace.Id).StageId + 1).Name;
             ShowPilots();
         }
 
@@ -7051,6 +7081,40 @@ namespace RaceManager.UI
             {
                 int i = 0;
             }
+        }
+
+        private void tbRaceFocused(object sender, EventArgs e)
+        {
+            cmbRaceGroup.DataSource = null;
+            cmbRaceGroup.Items.Clear();
+
+            List<RaceUIInfo> data = new List<RaceUIInfo>();
+
+            var raceList = _db.Races.ToList();
+            foreach (var race in raceList)
+            {
+                if (/*race.RaceDate.Date == DateTime.Now.Date &&*/ !race.Finished)
+                {
+                    RaceUIInfo thisRace = new RaceUIInfo();
+                    thisRace.Id = race.Id;
+                    // Get groups list...
+                    var groups = _db.RaceGroups.Where(g => g.RaceId == race.Id).ToList();
+                    thisRace.Name = _db.Tracks.Find(race.TrackId).Name + ", " + race.StartTime + " (";
+                    foreach (var group in groups)
+                    {
+                        thisRace.Name += _db.Groups.Find(group.GroupId).Name + " ";
+                    }
+                    thisRace.Name += ")";
+                    data.Add(thisRace);
+                }
+            }
+            cmbRaceGroup.DataSource = data;
+            cmbRaceGroup.DisplayMember = "Name";
+        }
+
+        private void bindingSourcePilots_CurrentChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

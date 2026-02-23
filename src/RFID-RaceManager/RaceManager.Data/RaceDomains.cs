@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using static RaceManager.Data.Groups;
+//using static RaceManager.Data.Groups;
 
 namespace RaceManager.Data
 {
@@ -45,23 +45,35 @@ namespace RaceManager.Data
         public int Length { get; set; }
     }
     
+    public class RaceGroups
+    {
+        public int Id { get; set; }
+        public int RaceId { get; set; }
+        public int GroupId { get; set; }
+    }
     public class Races
     {
         public int Id { get; set; }
         public int TrackId { get; set; }
         public int StageId { get; set; } = 1;
-        public DateTime StartTime { get; set; }
-        public DateTime FinishTime { get; set; }
-        public DateTime RaceDate { get; set; }
+        public string StartTime { get; set; }
+        public string FinishTime { get; set; }
+        public string RaceDate { get; set; }
         public bool Finished { get; set; }
 
-        [NotMapped]
-        public List<Groups> RaceGroups { get; set; }
+        //[NotMapped]
+        //public List<Groups> RaceGroups { get; set; }
 
-        public Races()
-        {
-            RaceGroups = new List<Groups>();
-        }
+        //public Races()
+        //{
+        //    RaceGroups = new List<Groups>();
+        //}
+    }
+    
+    public class RaceUIInfo
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
     public class Race
     {
@@ -76,25 +88,25 @@ namespace RaceManager.Data
         public string Location { get; set; }
         public double? Length { get; set; }
         public DateTime Date { get; set; }
-        public int NumberOfLaps { get; set; }
-        public int UseSecondChance { get; set; }
+        //public int NumberOfLaps { get; set; }
+        //public int UseSecondChance { get; set; }
 
         /// <summary>
         /// Number of qualification rounds
         /// </summary>
-        public int NumberOfQualRounds { get; set; }
+        //public int NumberOfQualRounds { get; set; }
         //public int NumberOfFinals { get; set; }
 
         public List<Group> Groups { get; set; }
         public List<RaceEvent> RaceEvents { get; set; }
 
-        [NotMapped]
-        public bool Is18RoundEnabled { get; set; }
+        //[NotMapped]
+        //public bool Is18RoundEnabled { get; set; }
 
-        public Race()
-        {
-            RaceEvents = new List<RaceEvent>();
-        }
+        //public Race()
+        //{
+        //    RaceEvents = new List<RaceEvent>();
+        //}
     }
 
     [JsonObject(MemberSerialization.OptIn)]
@@ -117,7 +129,7 @@ namespace RaceManager.Data
     public class RaceEvent
     {
         public int Id { get; set; }
-        public int GroupId { get; set; }
+        //public int GroupId { get; set; }
         public int RaceId { get; set; }
 
         [JsonProperty]
@@ -125,6 +137,8 @@ namespace RaceManager.Data
 
         [JsonProperty]
         public Group Group { get; set; }
+        [JsonProperty]
+        public List<RacePilot> Pilots;// { get; set; }
 
         [JsonProperty]
         public List<LapsInfo> Laps { get; set; }
@@ -132,6 +146,7 @@ namespace RaceManager.Data
         public RaceEvent()
         {
             Laps = new List<LapsInfo>();
+            Pilots = new List<RacePilot>();
         }
 
         [NotMapped]
@@ -216,7 +231,7 @@ namespace RaceManager.Data
         [NotMapped]
         public TimeSpan? StartTime { get; set; }
 
-        private TimeSpan?[] _lapsTime = { null, null, null, null, null, null };
+        private TimeSpan?[] _lapsTime = { /*null, null, null, null, null, null*/ };
 
         public List<TimeSpan> GetLapsTime()
         {
@@ -244,29 +259,29 @@ namespace RaceManager.Data
             set { SetLapTime(1, value); }
         }
         
-        public string Lap3
-        {
-            get { return GetLapTime(2); }
-            set { SetLapTime(2, value); }
-        }
+        //public string Lap3
+        //{
+        //    get { return GetLapTime(2); }
+        //    set { SetLapTime(2, value); }
+        //}
         
-        public string Lap4
-        {
-            get { return GetLapTime(3); }
-            set { SetLapTime(3, value); }
-        }
+        //public string Lap4
+        //{
+        //    get { return GetLapTime(3); }
+        //    set { SetLapTime(3, value); }
+        //}
         
-        public string Lap5
-        {
-            get { return GetLapTime(4); }
-            set { SetLapTime(4, value); }
-        }
+        //public string Lap5
+        //{
+        //    get { return GetLapTime(4); }
+        //    set { SetLapTime(4, value); }
+        //}
         
-        public string Lap6
-        {
-            get { return GetLapTime(5); }
-            set { SetLapTime(5, value); }
-        }
+        //public string Lap6
+        //{
+        //    get { return GetLapTime(5); }
+        //    set { SetLapTime(5, value); }
+        //}
 
         private void SetLapTime(int index, string value)
         {

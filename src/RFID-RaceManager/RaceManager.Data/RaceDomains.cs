@@ -1,14 +1,68 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using Newtonsoft.Json;
+using System.Security.Cryptography.X509Certificates;
+using static RaceManager.Data.Groups;
 
 namespace RaceManager.Data
 {
+    public class Tracks
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public int StartDelay { get; set; }
+        public int LapDelay { get; set; }
+    }
+    public class GroupMembers
+    {
+        public int Id { get; set; }
+        public int GroupId { get; set; }
+        public int PilotId { get; set; }
+    }
+    public class Groups
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        [NotMapped]
+        public List<Pilot> Members { get; set; }
+        public Groups()
+        {
+            Members = new List<Pilot>();
+        }
+    }
+
+    public class Stages
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Length { get; set; }
+    }
+    
+    public class Races
+    {
+        public int Id { get; set; }
+        public int TrackId { get; set; }
+        public int StageId { get; set; } = 1;
+        public DateTime StartTime { get; set; }
+        public DateTime FinishTime { get; set; }
+        public DateTime RaceDate { get; set; }
+        public bool Finished { get; set; }
+
+        [NotMapped]
+        public List<Groups> RaceGroups { get; set; }
+
+        public Races()
+        {
+            RaceGroups = new List<Groups>();
+        }
+    }
     public class Race
     {
         public int Id { get; set; }
@@ -89,23 +143,26 @@ namespace RaceManager.Data
         public int Id { get; set; }
         public string Tag { get; set; }
         public string Name { get; set; }
-        public string Nickname { get; set; }
+        //public string Nickname { get; set; }
         public string Team { get; set; }
-        public string Email { get; set; }
-        public int Confirmation { get; set; }
+        //public string Email { get; set; }
+        public int Number { get; set; }
+        public string Grade { get; set; }
+        public string TechType { get; set; }
+        //public int Confirmation { get; set; }
 
-        [NotMapped]
-        public string ConfirmationString
-        {
-            get { return Confirmation == 1 ? "Yes" : "No"; }
-            set
-            {
-                if (string.IsNullOrEmpty(value)) return;
+        //[NotMapped]
+        //public string ConfirmationString
+        //{
+        //    get { return Confirmation == 1 ? "Yes" : "No"; }
+        //    set
+        //    {
+        //        if (string.IsNullOrEmpty(value)) return;
 
-                if (value.ToLower() == "yes") Confirmation = 1;
-                if (value.ToLower() == "no") Confirmation = 0;
-            }
-        }
+        //        if (value.ToLower() == "yes") Confirmation = 1;
+        //        if (value.ToLower() == "no") Confirmation = 0;
+        //    }
+        //}
     }
 
     [NotMapped]
@@ -119,11 +176,11 @@ namespace RaceManager.Data
         {
             Id = pilot.Id;
             Name = pilot.Name;
-            Nickname = pilot.Nickname;
+            //Nickname = pilot.Nickname;
             Team = pilot.Team;
-            Email = pilot.Email;
+            //Email = pilot.Email;
             Tag = pilot.Tag;
-            Confirmation = pilot.Confirmation;
+            //Confirmation = pilot.Confirmation;
         }
 
         public RacePilot()
@@ -145,6 +202,7 @@ namespace RaceManager.Data
         [JsonProperty]
         public string PilotNickname { get; set; }
         public int RaceEventId { get; set; }
+        public int PilotNumber { get; set; }
 
         [JsonProperty]
         public int OrderNumber { get; set; }

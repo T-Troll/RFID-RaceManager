@@ -30,12 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.gvPilots = new System.Windows.Forms.DataGridView();
-            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nicknameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.teamDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.emailDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.confirmationStringDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pilotBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.btnClose = new System.Windows.Forms.Button();
             this.btnAddPilots = new System.Windows.Forms.Button();
@@ -44,6 +38,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnAddPilot = new System.Windows.Forms.Button();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.teamDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.confirmationStringDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvPilots)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pilotBindingSource)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -59,60 +58,21 @@
             this.gvPilots.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvPilots.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameDataGridViewTextBoxColumn,
-            this.nicknameDataGridViewTextBoxColumn,
+            this.Number,
             this.teamDataGridViewTextBoxColumn,
             this.tagDataGridViewTextBoxColumn,
-            this.emailDataGridViewTextBoxColumn,
             this.confirmationStringDataGridViewTextBoxColumn});
             this.gvPilots.DataSource = this.pilotBindingSource;
             this.gvPilots.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvPilots.GridColor = System.Drawing.SystemColors.Control;
-            this.gvPilots.Location = new System.Drawing.Point(2, 2);
-            this.gvPilots.Margin = new System.Windows.Forms.Padding(2);
+            this.gvPilots.Location = new System.Drawing.Point(4, 4);
+            this.gvPilots.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gvPilots.Name = "gvPilots";
+            this.gvPilots.RowHeadersWidth = 72;
             this.gvPilots.RowTemplate.Height = 24;
             this.gvPilots.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvPilots.Size = new System.Drawing.Size(930, 432);
+            this.gvPilots.Size = new System.Drawing.Size(1704, 799);
             this.gvPilots.TabIndex = 1;
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            this.nameDataGridViewTextBoxColumn.Width = 200;
-            // 
-            // nicknameDataGridViewTextBoxColumn
-            // 
-            this.nicknameDataGridViewTextBoxColumn.DataPropertyName = "Nickname";
-            this.nicknameDataGridViewTextBoxColumn.HeaderText = "Nickname";
-            this.nicknameDataGridViewTextBoxColumn.Name = "nicknameDataGridViewTextBoxColumn";
-            // 
-            // teamDataGridViewTextBoxColumn
-            // 
-            this.teamDataGridViewTextBoxColumn.DataPropertyName = "Team";
-            this.teamDataGridViewTextBoxColumn.HeaderText = "Team";
-            this.teamDataGridViewTextBoxColumn.Name = "teamDataGridViewTextBoxColumn";
-            // 
-            // tagDataGridViewTextBoxColumn
-            // 
-            this.tagDataGridViewTextBoxColumn.DataPropertyName = "Tag";
-            this.tagDataGridViewTextBoxColumn.HeaderText = "Tag";
-            this.tagDataGridViewTextBoxColumn.Name = "tagDataGridViewTextBoxColumn";
-            this.tagDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // emailDataGridViewTextBoxColumn
-            // 
-            this.emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
-            this.emailDataGridViewTextBoxColumn.HeaderText = "Email";
-            this.emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
-            this.emailDataGridViewTextBoxColumn.Width = 200;
-            // 
-            // confirmationStringDataGridViewTextBoxColumn
-            // 
-            this.confirmationStringDataGridViewTextBoxColumn.DataPropertyName = "ConfirmationString";
-            this.confirmationStringDataGridViewTextBoxColumn.HeaderText = "Confirmation";
-            this.confirmationStringDataGridViewTextBoxColumn.Name = "confirmationStringDataGridViewTextBoxColumn";
             // 
             // pilotBindingSource
             // 
@@ -121,18 +81,20 @@
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(695, 3);
+            this.btnClose.Location = new System.Drawing.Point(1274, 6);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(153, 27);
+            this.btnClose.Size = new System.Drawing.Size(281, 50);
             this.btnClose.TabIndex = 2;
             this.btnClose.Text = "Cancel";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
             // btnAddPilots
             // 
-            this.btnAddPilots.Location = new System.Drawing.Point(536, 3);
+            this.btnAddPilots.Location = new System.Drawing.Point(983, 6);
+            this.btnAddPilots.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnAddPilots.Name = "btnAddPilots";
-            this.btnAddPilots.Size = new System.Drawing.Size(153, 27);
+            this.btnAddPilots.Size = new System.Drawing.Size(281, 50);
             this.btnAddPilots.TabIndex = 3;
             this.btnAddPilots.Text = "Add Pilots to List";
             this.btnAddPilots.UseVisualStyleBackColor = true;
@@ -140,9 +102,10 @@
             // 
             // btnSaveChanges
             // 
-            this.btnSaveChanges.Location = new System.Drawing.Point(377, 3);
+            this.btnSaveChanges.Location = new System.Drawing.Point(691, 6);
+            this.btnSaveChanges.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnSaveChanges.Name = "btnSaveChanges";
-            this.btnSaveChanges.Size = new System.Drawing.Size(153, 27);
+            this.btnSaveChanges.Size = new System.Drawing.Size(281, 50);
             this.btnSaveChanges.TabIndex = 4;
             this.btnSaveChanges.Text = "Save Changes to Database";
             this.btnSaveChanges.UseVisualStyleBackColor = true;
@@ -150,9 +113,10 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(218, 3);
+            this.btnRefresh.Location = new System.Drawing.Point(400, 6);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(153, 27);
+            this.btnRefresh.Size = new System.Drawing.Size(281, 50);
             this.btnRefresh.TabIndex = 5;
             this.btnRefresh.Text = "Refresh List from Database";
             this.btnRefresh.UseVisualStyleBackColor = true;
@@ -166,11 +130,12 @@
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 91.6129F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.387096F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(934, 477);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1712, 881);
             this.tableLayoutPanel1.TabIndex = 6;
             // 
             // panel1
@@ -181,27 +146,70 @@
             this.panel1.Controls.Add(this.btnRefresh);
             this.panel1.Controls.Add(this.btnAddPilots);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(75, 439);
+            this.panel1.Location = new System.Drawing.Point(137, 813);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(856, 35);
+            this.panel1.Size = new System.Drawing.Size(1569, 62);
             this.panel1.TabIndex = 7;
             // 
             // btnAddPilot
             // 
-            this.btnAddPilot.Location = new System.Drawing.Point(59, 3);
+            this.btnAddPilot.Location = new System.Drawing.Point(108, 6);
+            this.btnAddPilot.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnAddPilot.Name = "btnAddPilot";
-            this.btnAddPilot.Size = new System.Drawing.Size(153, 27);
+            this.btnAddPilot.Size = new System.Drawing.Size(281, 50);
             this.btnAddPilot.TabIndex = 6;
             this.btnAddPilot.Text = "Add New Pilot";
             this.btnAddPilot.UseVisualStyleBackColor = true;
             this.btnAddPilot.Click += new System.EventHandler(this.btnAddPilot_Click);
             // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.MinimumWidth = 9;
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.Width = 200;
+            // 
+            // Number
+            // 
+            this.Number.DataPropertyName = "Number";
+            this.Number.HeaderText = "Number";
+            this.Number.MinimumWidth = 9;
+            this.Number.Name = "Number";
+            this.Number.Width = 175;
+            // 
+            // teamDataGridViewTextBoxColumn
+            // 
+            this.teamDataGridViewTextBoxColumn.DataPropertyName = "Team";
+            this.teamDataGridViewTextBoxColumn.HeaderText = "Team";
+            this.teamDataGridViewTextBoxColumn.MinimumWidth = 9;
+            this.teamDataGridViewTextBoxColumn.Name = "teamDataGridViewTextBoxColumn";
+            this.teamDataGridViewTextBoxColumn.Width = 175;
+            // 
+            // tagDataGridViewTextBoxColumn
+            // 
+            this.tagDataGridViewTextBoxColumn.DataPropertyName = "Tag";
+            this.tagDataGridViewTextBoxColumn.HeaderText = "Tag";
+            this.tagDataGridViewTextBoxColumn.MinimumWidth = 9;
+            this.tagDataGridViewTextBoxColumn.Name = "tagDataGridViewTextBoxColumn";
+            this.tagDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // confirmationStringDataGridViewTextBoxColumn
+            // 
+            this.confirmationStringDataGridViewTextBoxColumn.DataPropertyName = "ConfirmationString";
+            this.confirmationStringDataGridViewTextBoxColumn.HeaderText = "Confirmation";
+            this.confirmationStringDataGridViewTextBoxColumn.MinimumWidth = 9;
+            this.confirmationStringDataGridViewTextBoxColumn.Name = "confirmationStringDataGridViewTextBoxColumn";
+            this.confirmationStringDataGridViewTextBoxColumn.Width = 175;
+            // 
             // AddPilotsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(934, 477);
+            this.ClientSize = new System.Drawing.Size(1712, 881);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "AddPilotsForm";
             this.Text = "Add Pilots from DB";
             this.Load += new System.EventHandler(this.AddPilotsForm_Load);
@@ -216,12 +224,8 @@
         #endregion
 
         private System.Windows.Forms.DataGridView gvPilots;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn nicknameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn teamDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tagDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn emailDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn confirmationStringDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource pilotBindingSource;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnAddPilots;
@@ -230,5 +234,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnAddPilot;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Number;
+        private System.Windows.Forms.DataGridViewTextBoxColumn teamDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tagDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn confirmationStringDataGridViewTextBoxColumn;
     }
 }

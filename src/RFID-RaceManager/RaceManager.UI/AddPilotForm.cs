@@ -24,10 +24,11 @@ namespace RaceManager.UI
             Pilot = new Pilot();
             Pilot.Tag = tbPilotTag.Text;
             Pilot.Name = tbPilotName.Text;
-            Pilot.Nickname = tbPilotStartNumber.Text;
+            Pilot.Number = (int)tbPilotStartNumber.Value;
             Pilot.Team = tbPilotTeam.Text;
-            Pilot.Email = tbPilotEmail.Text;
-            Pilot.Confirmation = cbPilotConfirmation.Checked ? 1 : 0;
+            Pilot.TechType = tbPilotTechType.Text;
+            Pilot.Grade = tbPilotGrade.Text;
+            //Pilot.Confirmation = cbPilotConfirmation.Checked ? 1 : 0;
             DialogResult = DialogResult.OK;
         }
     }

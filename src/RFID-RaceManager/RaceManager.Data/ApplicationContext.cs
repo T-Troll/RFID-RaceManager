@@ -13,10 +13,12 @@ namespace RaceManager.Data
             Database.Log = (s => System.Diagnostics.Debug.WriteLine(s));
         }
 
-        public DbSet<Race> Races { get; set; }
-
+        public DbSet<Tracks> Tracks { get; set; }
+        public DbSet<GroupMembers> GroupMembers { get; set; }
+        public DbSet<Groups> Groups { get; set; }
+        public DbSet<Stages> StageNames { get; set; }
+        public DbSet<Races> Races { get; set; }
         public DbSet<RaceEvent> RaceEvents { get; set; }
-
         public DbSet<Pilot> Pilots { get; set; }
     }
 

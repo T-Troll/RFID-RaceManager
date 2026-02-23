@@ -206,6 +206,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\DataSources\RaceManager.Data.Groups.datasource" />
     <None Include="Properties\DataSources\RaceManager.Data.LapsInfo.datasource" />
     <None Include="Properties\DataSources\RaceManager.Data.Pilot.datasource" />
     <None Include="Properties\DataSources\RaceManager.Data.RaceEvent.datasource" />

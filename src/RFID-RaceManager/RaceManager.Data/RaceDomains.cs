@@ -19,6 +19,7 @@ namespace RaceManager.Data
         public string Location { get; set; }
         public int StartDelay { get; set; }
         public int LapDelay { get; set; }
+        public int Length { get; set; }
     }
     public class GroupMembers
     {
@@ -131,6 +132,8 @@ namespace RaceManager.Data
         public int Id { get; set; }
         //public int GroupId { get; set; }
         public int RaceId { get; set; }
+        public int MinLapTime { get; set; }
+        public int MinStartTime { get; set; }
 
         [JsonProperty]
         public string Round { get; set; }
@@ -214,8 +217,8 @@ namespace RaceManager.Data
 
         [JsonProperty]
         public string PilotName { get; set; }
-        [JsonProperty]
-        public string PilotNickname { get; set; }
+        //[JsonProperty]
+        //public string PilotNickname { get; set; }
         public int RaceEventId { get; set; }
         public int PilotNumber { get; set; }
 
@@ -230,6 +233,8 @@ namespace RaceManager.Data
 
         [NotMapped]
         public TimeSpan? StartTime { get; set; }
+        [NotMapped]
+        public TimeSpan? LastLapTime { get; set; }
 
         private TimeSpan?[] _lapsTime = { /*null, null, null, null, null, null*/ };
 
@@ -247,17 +252,17 @@ namespace RaceManager.Data
             set { }
         }
 
-        public string Lap1
-        {
-            get { return GetLapTime(0); }
-            set { SetLapTime(0, value); }
-        }
+        //public string Lap1
+        //{
+        //    get { return GetLapTime(0); }
+        //    set { SetLapTime(0, value); }
+        //}
         
-        public string Lap2
-        {
-            get { return GetLapTime(1); }
-            set { SetLapTime(1, value); }
-        }
+        //public string Lap2
+        //{
+        //    get { return GetLapTime(1); }
+        //    set { SetLapTime(1, value); }
+        //}
         
         //public string Lap3
         //{
@@ -318,7 +323,11 @@ namespace RaceManager.Data
 
         private string GetLapTime(int index)
         {
-            var value = _lapsTime[index];
+            TimeSpan? value = DNS;
+            if (_lapsTime.Length > index)
+            {
+                value = _lapsTime[index];
+            }
 
             if (value == DNF) return "DNF";
             if (value == DNS) return "DNS";
@@ -446,8 +455,9 @@ namespace RaceManager.Data
             {
                 if (diff.TotalSeconds >= minLapTime)
                 {
-                    var prev = Array.IndexOf(_lapsTime, null);
-                    _lapsTime[prev] = diff;
+                    //var prev = Array.IndexOf(_lapsTime, null);
+                    //_lapsTime[prev] = diff;
+                    _lapsTime.Append(diff);
                 }
                 else
                 {

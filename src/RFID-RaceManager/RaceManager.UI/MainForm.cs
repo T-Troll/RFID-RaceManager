@@ -5084,6 +5084,8 @@ namespace RaceManager.UI
             FillRaceInfo(_race);
             SaveRace();
 
+            // ToDo: update race start time
+
             _timer.Start();
 
             //var file = ConfigurationManager.AppSettings["StartSoundFile"];
@@ -5282,19 +5284,23 @@ namespace RaceManager.UI
             var rssi = row[1].ToString();
             var carrFreq = row[3].ToString();
 
-            if (lap == null || lap.LapsCount >= nudNumOfLaps.Value) return;
+            if (lap == null /*|| lap.LapsCount >= nudNumOfLaps.Value*/) return;
             Debug.WriteLine("tag = " + tag + ", lap = " + lap.OrderNumber + ", time = " + _raceTime);
 
-            var success = lap.RegisterLapTime(_raceTime, (double)nudMinFirstLapTime.Value, (double)nudMinLapTime.Value, rssi, carrFreq);
+            var success = lap.RegisterLapTime(_raceTime, (double)_selectedRaceEvent.MinStartTime, (double)_selectedRaceEvent.MinLapTime, rssi, carrFreq);
+            if (success)
+            {
+                lap.LastLapTime = lap.GetLapsTime().Last();
+            }
             bindingSourceRace.ResetBindings(false);
 
             if (!success) return;
 
             ExportRace();
 
-            var file = ConfigurationManager.AppSettings["TagReadSoundFile"];
-            var path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), file);
-            SoundHelper.PlaySound(path, SystemSounds.Asterisk);
+            //var file = ConfigurationManager.AppSettings["TagReadSoundFile"];
+            //var path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), file);
+            //SoundHelper.PlaySound(path, SystemSounds.Asterisk);
 
             UpdateRanking();
             bindingSourceRanking.ResetBindings(false);
@@ -5407,6 +5413,7 @@ namespace RaceManager.UI
         private void btnRaceStop_Click(object sender, EventArgs e)
         {
             _timer.Stop();
+            // ToDo: update race finish time
 
             ShowRaceTime();
             EnableDisableRaceControls(true);
@@ -5498,6 +5505,12 @@ namespace RaceManager.UI
 
             _selectedRaceEvent = new RaceEvent();
 
+            var race = _db.Races.Find(raceId);
+            var track = _db.Tracks.Find(race.TrackId);
+
+            _selectedRaceEvent.MinLapTime = track.LapDelay;
+            _selectedRaceEvent.MinStartTime = track.StartDelay;
+
             List<Pilot> pilots = new List<Pilot>();
 
             foreach (var grp in groups)
@@ -5505,55 +5518,65 @@ namespace RaceManager.UI
                 var pg = _db.Groups.Find(grp.GroupId);
                 foreach (var pilot in pg.Members)
                 {
-
+                    _selectedRaceEvent.RaceId = raceId;
+                    var lapsInfo = new LapsInfo
+                    {
+                        PilotId = pilot.Id,
+                        Epc = pilot.Tag,
+                        RaceEventId = raceId, //_selectedRaceEvent.Id,
+                        PilotName = pilot.Name,
+                        PilotNumber = pilot.Number,
+                        //OrderNumber = pilot.OrderNumber
+                    };//
+                    _selectedRaceEvent.Laps.Add(lapsInfo);
                 }
             }
 
-            var group = _race.Groups.FirstOrDefault(g => g.Name == cmbRaceGroup.SelectedItem.ToString());
+            //var group = _race.Groups.FirstOrDefault(g => g.Name == cmbRaceGroup.SelectedItem.ToString());
             //var round = "";// cmbRaceRound.SelectedItem.ToString();
-            if (group != null)
-            {
-                //find existing race event
-                var raceEvent = _race.RaceEvents.FirstOrDefault(r => r.Group.Name == group.Name /*&& r.Round == round*/);
-                if (raceEvent == null)
-                {
-                    raceEvent = new RaceEvent();
-                    raceEvent.RaceId = _race.Id;
-                    raceEvent.Group = group;
-                    //raceEvent.Round = round;
-                    _race.RaceEvents.Add(raceEvent);
-                }
+            //if (group != null)
+            //{
+            //    //find existing race event
+            //    var raceEvent = _race.RaceEvents.FirstOrDefault(r => r.Group.Name == group.Name /*&& r.Round == round*/);
+            //    if (raceEvent == null)
+            //    {
+            //        raceEvent = new RaceEvent();
+            //        raceEvent.RaceId = _race.Id;
+            //        raceEvent.Group = group;
+            //        //raceEvent.Round = round;
+            //        _race.RaceEvents.Add(raceEvent);
+            //    }
 
-                if (raceEvent.Laps.Count == 0)
-                {
-                    foreach (var pilot in group.Pilots)
-                    {
-                        if (pilot == null) continue;
-                        var lapsInfo = new LapsInfo
-                        {
-                            PilotId = pilot.Id,
-                            Epc = pilot.Tag,
-                            RaceEventId = raceEvent.Id,
-                            PilotName = pilot.Name,
-                            PilotNumber = pilot.Number,
-                            OrderNumber = pilot.OrderNumber
-                        };
-                        raceEvent.Laps.Add(lapsInfo);
-                    }
-                }
-                bindingSourceRace.DataSource = raceEvent.Laps;
+            //    if (raceEvent.Laps.Count == 0)
+            //    {
+            //        foreach (var pilot in group.Pilots)
+            //        {
+            //            if (pilot == null) continue;
+            //            var lapsInfo = new LapsInfo
+            //            {
+            //                PilotId = pilot.Id,
+            //                Epc = pilot.Tag,
+            //                RaceEventId = raceEvent.Id,
+            //                PilotName = pilot.Name,
+            //                PilotNumber = pilot.Number,
+            //                OrderNumber = pilot.OrderNumber
+            //            };
+            //            raceEvent.Laps.Add(lapsInfo);
+            //        }
+            //    }
+                bindingSourceRace.DataSource = _selectedRaceEvent.Laps;
                 bindingSourceRace.ResetBindings(false);
-                _selectedRaceEvent = raceEvent;
+                //_selectedRaceEvent = raceEvent;
 
                 // hide laps columns if not needed
-                var numOfLaps = nudNumOfLaps.Value;
-                if (numOfLaps < 6)
-                    Lap6.Visible = false;
-                if (numOfLaps < 5)
-                    Lap5.Visible = false;
-                if (numOfLaps < 4)
-                    Lap4.Visible = false;
-            }
+                //var numOfLaps = nudNumOfLaps.Value;
+                //if (numOfLaps < 6)
+                //    Lap6.Visible = false;
+                //if (numOfLaps < 5)
+                //    Lap5.Visible = false;
+                //if (numOfLaps < 4)
+                //    Lap4.Visible = false;
+            //}
         }
 
         private void cmbRaceGroup_SelectedIndexChanged(object sender, EventArgs e)
@@ -5561,6 +5584,12 @@ namespace RaceManager.UI
             var selectedRace = cmbRaceGroup.SelectedItem as RaceUIInfo;
             tbCurEvGroup.Text = selectedRace.Name;
             tbCurEvRound.Text = _db.StageNames.Find(_db.Races.Find(selectedRace.Id).StageId + 1).Name;
+            var race = _db.Races.Find(selectedRace.Id);
+            var track = _db.Tracks.Find(race.TrackId);
+            tbRaceName.Text = track.Name;
+            dtpRaceDate.Value = DateTime.Parse(race.RaceDate);
+            tbRaceLocation.Text = track.Location;
+            tbRaceLength.Text = track.Length.ToString();
             ShowPilots();
         }
 
@@ -5575,6 +5604,8 @@ namespace RaceManager.UI
         private void btnRaceSave_Click(object sender, EventArgs e) // Confirm And Save Button
         {
             _selectedRaceEvent.Finished = true;
+            // ToDo: increase race stageID, set "finished" if it maxed.
+            // Save race info in archive table
             SaveRace();
             /*database objDatabase = new database();
             //string sqlQuery;
@@ -6978,11 +7009,11 @@ namespace RaceManager.UI
         {
             var avgSource = new List<AvgTop3RankingItem>();
             var bestSource = new List<LapsInfo>();
-
-            foreach (var raceEvent in _race.RaceEvents)
-            {
+            var raceEvent = _selectedRaceEvent;
+            //foreach (var raceEvent in _race.RaceEvents)
+            //{
                 //Only qualification rounds
-                if (!raceEvent.Round.StartsWith("Q")) continue;
+                //if (!raceEvent.Round.StartsWith("Q")) continue;
 
                 foreach (var lap in raceEvent.Laps)
                 {
@@ -7004,7 +7035,7 @@ namespace RaceManager.UI
                             bestSource[bestSource.IndexOf(existingLap)] = lap;
                     }
                 }
-            }
+            //}
 
             var bestOrderedList = bestSource.Where(s => s.BestLapTime.HasValue).OrderBy(s => s.BestLapTime).ToList();
             bestOrderedList.AddRange(bestSource.Where(s => !s.BestLapTime.HasValue).ToList());
@@ -7113,6 +7144,11 @@ namespace RaceManager.UI
         }
 
         private void bindingSourcePilots_CurrentChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bindingSourceRace_CurrentChanged(object sender, EventArgs e)
         {
 
         }

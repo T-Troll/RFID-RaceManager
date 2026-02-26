@@ -132,6 +132,7 @@ namespace RaceManager.Data
         public int Id { get; set; }
         //public int GroupId { get; set; }
         public int RaceId { get; set; }
+        public int StageId { get; set; }
         public int MinLapTime { get; set; }
         public int MinStartTime { get; set; }
 
@@ -353,6 +354,7 @@ namespace RaceManager.Data
 
         [JsonProperty]
         public string BestLapTimeString => BestLapTime?.ToString(@"mm\:ss\,fff");
+        public string LastLapTimeString => LastLapTime?.ToString(@"mm\:ss\,fff");
 
         public TimeSpan? AvgLapTime
         {
@@ -433,7 +435,7 @@ namespace RaceManager.Data
 
         public bool RegisterLapTime(TimeSpan raceTime, double minFirstLapTime, double minLapTime, string rssi, string carrFreq)
         {
-            //if (_lapsTime == null) _lapsTime = new List<TimeSpan?>();
+            //if (_lapsTime == null) _lapsTime = new Array<TimeSpan?>();
 
             var diff = raceTime - _prevRaceTime;
             IdCount++;
@@ -444,7 +446,11 @@ namespace RaceManager.Data
             if (!StartTime.HasValue)
             {
                 if (diff.TotalSeconds >= minFirstLapTime)
+                {
                     StartTime = diff;
+                    Array.Resize(ref _lapsTime, _lapsTime.Length + 1);
+                    _lapsTime[_lapsTime.Length - 1] = diff;
+                }
                 else
                 {
                     Debug.WriteLine("Tag = " + Epc + ", diff = " + diff.TotalSeconds + ", skipping the first lap");
@@ -457,7 +463,8 @@ namespace RaceManager.Data
                 {
                     //var prev = Array.IndexOf(_lapsTime, null);
                     //_lapsTime[prev] = diff;
-                    _lapsTime.Append(diff);
+                    Array.Resize(ref _lapsTime, _lapsTime.Length + 1);
+                    _lapsTime[_lapsTime.Length - 1] = diff;
                 }
                 else
                 {
@@ -472,7 +479,7 @@ namespace RaceManager.Data
 
         public void ClearLapTimes()
         {
-            _lapsTime = new TimeSpan?[] { null, null, null, null, null, null };
+            _lapsTime = new TimeSpan?[] { /*null, null, null, null, null, null*/ };
             RankNumber = null;
             _prevRaceTime = TimeSpan.Zero;
             IdCount = 0;

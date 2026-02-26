@@ -2479,7 +2479,7 @@
             this.gvRace.AllowUserToAddRows = false;
             this.gvRace.AllowUserToDeleteRows = false;
             this.gvRace.AutoGenerateColumns = false;
-            this.gvRace.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.gvRace.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.gvRace.BackgroundColor = System.Drawing.SystemColors.Control;
             this.gvRace.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvRace.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -3744,7 +3744,7 @@
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.22422F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.77578F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1040F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1044F));
             this.tableLayoutPanel4.Controls.Add(this.panel9, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.panel10, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.panel8, 1, 0);
@@ -3764,10 +3764,10 @@
             this.panel9.Controls.Add(this.btGetClearBuffer);
             this.panel9.Controls.Add(this.btGetBuffer);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel9.Location = new System.Drawing.Point(1419, 7);
+            this.panel9.Location = new System.Drawing.Point(1415, 7);
             this.panel9.Margin = new System.Windows.Forms.Padding(6);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(1029, 150);
+            this.panel9.Size = new System.Drawing.Size(1033, 150);
             this.panel9.TabIndex = 1;
             // 
             // btClearBuffer
@@ -3831,7 +3831,7 @@
             this.panel10.Location = new System.Drawing.Point(7, 7);
             this.panel10.Margin = new System.Windows.Forms.Padding(6);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(696, 150);
+            this.panel10.Size = new System.Drawing.Size(694, 150);
             this.panel10.TabIndex = 0;
             // 
             // btBufferInventory
@@ -3876,10 +3876,10 @@
             this.panel8.Controls.Add(this.cbBufferWorkant2);
             this.panel8.Controls.Add(this.cbBufferWorkant3);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel8.Location = new System.Drawing.Point(716, 7);
+            this.panel8.Location = new System.Drawing.Point(714, 7);
             this.panel8.Margin = new System.Windows.Forms.Padding(6);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(690, 150);
+            this.panel8.Size = new System.Drawing.Size(688, 150);
             this.panel8.TabIndex = 0;
             // 
             // cbBufferWorkant1
@@ -4514,7 +4514,7 @@
             this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 27.20588F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 72.79412F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1125F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1131F));
             this.tableLayoutPanel2.Controls.Add(this.panel2, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.panel3, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.panel4, 2, 0);
@@ -4547,10 +4547,10 @@
             this.panel2.Controls.Add(this.label59);
             this.panel2.Controls.Add(this.label48);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(366, 8);
+            this.panel2.Location = new System.Drawing.Point(364, 8);
             this.panel2.Margin = new System.Windows.Forms.Padding(6);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(941, 141);
+            this.panel2.Size = new System.Drawing.Size(937, 141);
             this.panel2.TabIndex = 0;
             // 
             // txtDStay
@@ -4769,7 +4769,7 @@
             this.panel3.Location = new System.Drawing.Point(8, 8);
             this.panel3.Margin = new System.Windows.Forms.Padding(6);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(344, 141);
+            this.panel3.Size = new System.Drawing.Size(342, 141);
             this.panel3.TabIndex = 1;
             // 
             // btFastInventory
@@ -4792,10 +4792,10 @@
             this.panel4.Controls.Add(this.label73);
             this.panel4.Controls.Add(this.label72);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(1321, 8);
+            this.panel4.Location = new System.Drawing.Point(1315, 8);
             this.panel4.Margin = new System.Windows.Forms.Padding(6);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1114, 141);
+            this.panel4.Size = new System.Drawing.Size(1120, 141);
             this.panel4.TabIndex = 2;
             // 
             // txtRepeat
@@ -7305,10 +7305,11 @@
             // 
             // LastLapTime
             // 
-            this.LastLapTime.DataPropertyName = "LastLapTime";
+            this.LastLapTime.DataPropertyName = "LastLapTimeString";
             this.LastLapTime.HeaderText = "Last lap";
             this.LastLapTime.MinimumWidth = 9;
             this.LastLapTime.Name = "LastLapTime";
+            this.LastLapTime.ReadOnly = true;
             this.LastLapTime.Width = 121;
             // 
             // TimeDifferential

@@ -5290,11 +5290,13 @@ namespace RaceManager.UI
             var success = lap.RegisterLapTime(_raceTime, (double)_selectedRaceEvent.MinStartTime, (double)_selectedRaceEvent.MinLapTime, rssi, carrFreq);
             if (success)
             {
-                lap.LastLapTime = lap.GetLapsTime().Last();
+                if (lap.GetLapsTime().Count() > 0)
+                    lap.LastLapTime = lap.GetLapsTime().Last();
             }
-            bindingSourceRace.ResetBindings(false);
+            else
+                return;
 
-            if (!success) return;
+            bindingSourceRace.ResetBindings(false);
 
             ExportRace();
 
@@ -5458,14 +5460,14 @@ namespace RaceManager.UI
             //race.NumberOfQualRounds = Convert.ToInt32(nudNumberOfQualRounds.Value);
             //race.UseSecondChance = cbSecondChance.Checked ? 1 : 0;
 
-            foreach (var raceEvent in race.RaceEvents)
-            {
-                foreach (var lap in raceEvent.Laps)
+            //foreach (var raceEvent in race.RaceEvents)
+            //{
+                foreach (var lap in _selectedRaceEvent.Laps)
                 {
                     lap.Length = race.Length;
                     //lap.NumberOfLaps = race.NumberOfLaps;
                 }
-            }
+            //}
             //  race.MinLapTime = Convert.ToInt32(tbRaceMinLapTime.Text);
         }
 
@@ -5582,15 +5584,18 @@ namespace RaceManager.UI
         private void cmbRaceGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedRace = cmbRaceGroup.SelectedItem as RaceUIInfo;
-            tbCurEvGroup.Text = selectedRace.Name;
-            tbCurEvRound.Text = _db.StageNames.Find(_db.Races.Find(selectedRace.Id).StageId + 1).Name;
-            var race = _db.Races.Find(selectedRace.Id);
-            var track = _db.Tracks.Find(race.TrackId);
-            tbRaceName.Text = track.Name;
-            dtpRaceDate.Value = DateTime.Parse(race.RaceDate);
-            tbRaceLocation.Text = track.Location;
-            tbRaceLength.Text = track.Length.ToString();
-            ShowPilots();
+            if (selectedRace != null)
+            {
+                tbCurEvGroup.Text = selectedRace.Name;
+                tbCurEvRound.Text = _db.StageNames.Find(_db.Races.Find(selectedRace.Id).StageId + 1).Name;
+                var race = _db.Races.Find(selectedRace.Id);
+                var track = _db.Tracks.Find(race.TrackId);
+                tbRaceName.Text = track.Name;
+                dtpRaceDate.Value = DateTime.Parse(race.RaceDate);
+                tbRaceLocation.Text = track.Location;
+                tbRaceLength.Text = track.Length.ToString();
+                ShowPilots();
+            }
         }
 
         private void gvRace_CellEndEdit(object sender, DataGridViewCellEventArgs e)

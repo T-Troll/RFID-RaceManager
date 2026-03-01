@@ -216,13 +216,16 @@ namespace RaceManager.Data
         
         public Int64[] LapsTime = { };
         [NotMapped]
-        public string PilotName { get { return "Unknown"; } }
+        public string PilotName { get; set; }
         [NotMapped]
         public int LapsNumber { get { return LapsTime.Length; } }
 
         public TimeSpan BestLapTime()
         {
-            return new TimeSpan(LapsTime.Min());
+            if (LapsTime.Length > 0)
+                return new TimeSpan(LapsTime.Min());
+            else
+                return TimeSpan.Zero;
         }
         [NotMapped]
         public string BestLapString { get { return BestLapTime().ToString(@"mm\:ss\,fff"); } }

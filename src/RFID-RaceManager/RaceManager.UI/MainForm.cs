@@ -7214,12 +7214,18 @@ namespace RaceManager.UI
 
         private void archiveRaceSelectionChanged(object sender, EventArgs e)
         {
+            raceArchiveBindingSource.DataSource = null;
             var selectedRace = archiveRaceList.SelectedItem as RaceUIInfo;
             // ToDo: get it from control
             var selectedStage = 1;
             if (selectedRace != null) {
                 // Fill data grid
-                var pilotsList = _db.RaceArchive.Select(x => x.RaceId == selectedRace.Id && x.StageId == selectedStage).ToList();
+                var pilotsList = _db.RaceArchive.Where(x => x.RaceId == selectedRace.Id && x.StageId == selectedStage).ToList();
+                // Fill pilot names
+                foreach (var pilot in pilotsList)
+                {
+                    pilot.PilotName = _db.Pilots.Find(pilot.PilotId).Name;
+                }
                 raceArchiveBindingSource.DataSource = pilotsList;
                 raceArchiveBindingSource.ResetBindings(false);
             }

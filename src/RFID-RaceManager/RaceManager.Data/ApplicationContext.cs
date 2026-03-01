@@ -21,6 +21,7 @@ namespace RaceManager.Data
         public DbSet<Races> Races { get; set; }
         public DbSet<RaceEvent> RaceEvents { get; set; }
         public DbSet<Pilot> Pilots { get; set; }
+        public DbSet<RaceArchive> RaceArchive { get; set; }
     }
 
 

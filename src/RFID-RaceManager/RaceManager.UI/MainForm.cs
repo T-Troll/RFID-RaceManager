@@ -5081,10 +5081,12 @@ namespace RaceManager.UI
                 return;
             }
 
+            var race = _db.Races.Find((cmbRaceGroup.SelectedItem as RaceUIInfo).Id);
+            race.StartTime = DateTime.Now.ToString();
+
+
             FillRaceInfo(_race);
             SaveRace();
-
-            // ToDo: update race start time
 
             _timer.Start();
 
@@ -5307,7 +5309,7 @@ namespace RaceManager.UI
             UpdateRanking();
             bindingSourceRanking.ResetBindings(false);
             
-            SaveRace();
+            //SaveRace();
         }
 
         private void BtnRaceExport_Click(object sender, EventArgs e)
@@ -5317,7 +5319,12 @@ namespace RaceManager.UI
             string filename = "";
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "CSV (*.csv)|*.csv";
-            sfd.FileName = $"{_selectedRaceEvent.Group.Name}({_selectedRaceEvent.Round}).csv";
+            //var curRace = _db.Races.Find(_selectedRaceEvent.RaceId);
+            string raceName = GetRaceName(_selectedRaceEvent.RaceId);
+            //var groups = _db.RaceGroups.Where(g => g.RaceId == curRace.Id).ToList();
+            //var groupName = _db.Groups.Find(groups.First().GroupId).Name;
+            var stageName = _db.StageNames.Find(_selectedRaceEvent.StageId).Name;
+            sfd.FileName = $"{raceName}({stageName}).csv";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 if (File.Exists(filename))
@@ -5415,7 +5422,8 @@ namespace RaceManager.UI
         private void btnRaceStop_Click(object sender, EventArgs e)
         {
             _timer.Stop();
-            // ToDo: update race finish time
+            var race = _db.Races.Find((cmbRaceGroup.SelectedItem as RaceUIInfo).Id);
+            race.FinishTime = DateTime.Now.ToString();
 
             ShowRaceTime();
             EnableDisableRaceControls(true);
@@ -5425,6 +5433,8 @@ namespace RaceManager.UI
 
             if (cmbRaceMode.SelectedIndex == 1)
                 StartStopInventoryFastSwitch();
+
+            SaveRace();
         }
 
         private void btnRaceReset_Click(object sender, EventArgs e)
@@ -5462,11 +5472,11 @@ namespace RaceManager.UI
 
             //foreach (var raceEvent in race.RaceEvents)
             //{
-                foreach (var lap in _selectedRaceEvent.Laps)
-                {
-                    lap.Length = race.Length;
-                    //lap.NumberOfLaps = race.NumberOfLaps;
-                }
+            foreach (var lap in _selectedRaceEvent.Laps)
+            {
+                lap.Length = race.Length;
+                //lap.NumberOfLaps = race.NumberOfLaps;
+            }
             //}
             //  race.MinLapTime = Convert.ToInt32(tbRaceMinLapTime.Text);
         }
@@ -5512,6 +5522,8 @@ namespace RaceManager.UI
 
             _selectedRaceEvent.MinLapTime = track.LapDelay;
             _selectedRaceEvent.MinStartTime = track.StartDelay;
+            _selectedRaceEvent.RaceId = raceId;
+            _selectedRaceEvent.StageId = _db.Races.Find(raceId).StageId + 1;
 
             List<Pilot> pilots = new List<Pilot>();
 
@@ -5520,7 +5532,6 @@ namespace RaceManager.UI
                 var pg = _db.Groups.Find(grp.GroupId);
                 foreach (var pilot in pg.Members)
                 {
-                    _selectedRaceEvent.RaceId = raceId;
                     var lapsInfo = new LapsInfo
                     {
                         PilotId = pilot.Id,
@@ -5609,7 +5620,33 @@ namespace RaceManager.UI
         private void btnRaceSave_Click(object sender, EventArgs e) // Confirm And Save Button
         {
             _selectedRaceEvent.Finished = true;
-            // ToDo: increase race stageID, set "finished" if it maxed.
+            // increase race stageID, set "finished" if it maxed.
+            var race = _db.Races.Find((cmbRaceGroup.SelectedItem as RaceUIInfo).Id);
+            race.StageId++;
+            if (race.StageId == 5)
+            {
+                race.Finished = true;
+            }
+            // ToDo: Fill RaceArchive entity
+            foreach (var racePilot in _selectedRaceEvent.Laps)
+            {
+                var achiveEntry = new RaceArchive();
+                achiveEntry.RaceId = race.Id;
+                achiveEntry.StageId = race.StageId;
+                achiveEntry.PilotId = racePilot.PilotId;
+                achiveEntry.Position = racePilot.CurrentPosition;
+
+                Array.Resize(ref achiveEntry.LapsTime, racePilot.GetLapsTime().Count);
+
+                for (int i = 0; i < racePilot.GetLapsTime().Count; i++)
+                {
+                    TimeSpan cLap = racePilot.GetLapsTime()[i];
+                    achiveEntry.LapsTime[i] = cLap.Ticks;
+                }
+                // ToDo: Fill ID
+                _db.RaceArchive.Add(achiveEntry);
+            }
+
             // Save race info in archive table
             SaveRace();
             /*database objDatabase = new database();
@@ -7088,9 +7125,9 @@ namespace RaceManager.UI
                 currentBestLapTime.BestLapTime.GetValueOrDefault(TimeSpan.MaxValue) < _bestLapTime)
             {
                 _bestLapTime = currentBestLapTime.BestLapTime.Value;
-                var file = ConfigurationManager.AppSettings["BestLapSoundFile"];
-                var path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), file);
-                SoundHelper.PlaySound(path, SystemSounds.Question);
+                //var file = ConfigurationManager.AppSettings["BestLapSoundFile"];
+                //var path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), file);
+                //SoundHelper.PlaySound(path, SystemSounds.Question);
             }
         }
         #endregion
@@ -7119,6 +7156,22 @@ namespace RaceManager.UI
             }
         }
 
+        private string GetRaceName(int raceId)
+        {
+            string result = "";
+            var race = _db.Races.Find(raceId);
+            if (race != null)
+            {
+                result = _db.Tracks.Find(race.TrackId).Name + ", " + race.RaceDate + " (";
+                var groups = _db.RaceGroups.Where(g => g.RaceId == raceId).ToList();
+                foreach (var group in groups)
+                {
+                    result += _db.Groups.Find(group.GroupId).Name + " ";
+                }
+                result += ")";
+            }
+            return result;
+        }
         private void tbRaceFocused(object sender, EventArgs e)
         {
             cmbRaceGroup.DataSource = null;
@@ -7133,14 +7186,15 @@ namespace RaceManager.UI
                 {
                     RaceUIInfo thisRace = new RaceUIInfo();
                     thisRace.Id = race.Id;
+                    thisRace.Name = GetRaceName(race.Id);
                     // Get groups list...
-                    var groups = _db.RaceGroups.Where(g => g.RaceId == race.Id).ToList();
-                    thisRace.Name = _db.Tracks.Find(race.TrackId).Name + ", " + race.StartTime + " (";
-                    foreach (var group in groups)
-                    {
-                        thisRace.Name += _db.Groups.Find(group.GroupId).Name + " ";
-                    }
-                    thisRace.Name += ")";
+                    //var groups = _db.RaceGroups.Where(g => g.RaceId == race.Id).ToList();
+                    //thisRace.Name = _db.Tracks.Find(race.TrackId).Name + ", " + race.StartTime + " (";
+                    //foreach (var group in groups)
+                    //{
+                    //    thisRace.Name += _db.Groups.Find(group.GroupId).Name + " ";
+                    //}
+                    //thisRace.Name += ")";
                     data.Add(thisRace);
                 }
             }
@@ -7156,6 +7210,45 @@ namespace RaceManager.UI
         private void bindingSourceRace_CurrentChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void archiveRaceSelectionChanged(object sender, EventArgs e)
+        {
+            var selectedRace = archiveRaceList.SelectedItem as RaceUIInfo;
+            // ToDo: get it from control
+            var selectedStage = 1;
+            if (selectedRace != null) {
+                // Fill data grid
+                var pilotsList = _db.RaceArchive.Select(x => x.RaceId == selectedRace.Id && x.StageId == selectedStage).ToList();
+                raceArchiveBindingSource.DataSource = pilotsList;
+                raceArchiveBindingSource.ResetBindings(false);
+            }
+        }
+
+        private void raceResultFocused(object sender, EventArgs e)
+        {
+
+
+            archiveRaceList.DataSource = null;
+            archiveRaceList.Items.Clear();
+
+            List<RaceUIInfo> data = new List<RaceUIInfo>();
+
+            // add all races
+            var archiveGroup = _db.RaceArchive.GroupBy(g => g.RaceId);
+            if (archiveGroup.ToList().Count > 0) {
+                var archive = archiveGroup.ToList();    //Select(x => x.FirstOrDefault()).ToList();
+                foreach (var race in archive)
+                {
+                    RaceUIInfo thisRace = new RaceUIInfo();
+                    thisRace.Id = race.Key;//    .RaceId;
+                    thisRace.Name = GetRaceName(race.Key);
+                    data.Add(thisRace);
+                }
+
+                archiveRaceList.DataSource = data;
+                archiveRaceList.DisplayMember = "Name";
+            }
         }
     }
 }

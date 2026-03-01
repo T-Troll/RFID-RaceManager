@@ -207,6 +207,28 @@ namespace RaceManager.Data
         }
     }
 
+    public class RaceArchive {
+        public int Id { get; set; }
+        public int RaceId { get; set; }
+        public int StageId { get; set; }
+        public int PilotId { get; set; }
+        public int? Position {  get; set; }
+        
+        public Int64[] LapsTime = { };
+        [NotMapped]
+        public string PilotName { get { return "Unknown"; } }
+        [NotMapped]
+        public int LapsNumber { get { return LapsTime.Length; } }
+
+        public TimeSpan BestLapTime()
+        {
+            return new TimeSpan(LapsTime.Min());
+        }
+        [NotMapped]
+        public string BestLapString { get { return BestLapTime().ToString(@"mm\:ss\,fff"); } }
+
+    }
+
     [JsonObject(MemberSerialization.OptIn)]
     public class LapsInfo
     {

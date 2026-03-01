@@ -209,6 +209,7 @@
     <None Include="Properties\DataSources\RaceManager.Data.Groups.datasource" />
     <None Include="Properties\DataSources\RaceManager.Data.LapsInfo.datasource" />
     <None Include="Properties\DataSources\RaceManager.Data.Pilot.datasource" />
+    <None Include="Properties\DataSources\RaceManager.Data.RaceArchive.datasource" />
     <None Include="Properties\DataSources\RaceManager.Data.RaceEvent.datasource" />
     <None Include="Properties\DataSources\RaceManager.Data.Races.datasource" />
     <None Include="Properties\DataSources\RaceManager.Data.RaceUIInfo.datasource" />
